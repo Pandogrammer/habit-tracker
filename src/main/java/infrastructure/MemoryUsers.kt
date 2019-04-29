@@ -13,4 +13,9 @@ class MemoryUsers: Users {
     override fun add(username: String) {
         users.add(username)
     }
+
+    override fun all(): List<String> {
+        return users
+    }
+
 }

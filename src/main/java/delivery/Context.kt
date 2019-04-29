@@ -2,54 +2,94 @@ package delivery
 
 import actions.*
 import infrastructure.*
+import org.springframework.beans.factory.config.BeanDefinition
+import org.springframework.context.annotation.Bean
+import org.springframework.context.annotation.Configuration
+import org.springframework.context.annotation.Scope
 
+@Configuration
 class Context {
 
-    private val users: Users
-    private val friends: Friends
-    private val habits: Habits
-    private val userHabits: UserHabits
-    private val userQuests: UserQuests
+	/*
+	// Resources
+	@Bean
+	@Scope(BeanDefinition.SCOPE_PROTOTYPE)
+	fun oneForAllResource(addFriend: AddFriend,
+						  addQuestSession: AddQuestSession,
+						  addUserHabit: AddUserHabit,
+						  createHabit: CreateHabit,
+						  createQuest: CreateQuest,
+						  createUser: CreateUser,
+						  users: Users,
+						  friends: Friends,
+						  habits: Habits,
+						  userHabits: UserHabits,
+						  userQuests: UserQuests
 
-    val addFriend: AddFriend
-    val addQuestSession: AddQuestSession
-    val addUserHabit: AddUserHabit
-    val createHabit: CreateHabit
-    val createQuest: CreateQuest
-    val createUser: CreateUser
+						  ): OneForAllResource {
+		return OneForAllResource(addFriend, addQuestSession,
+				addUserHabit, createHabit, createQuest, createUser,
+				users, friends, habits, userHabits, userQuests)
+	}
+	*/
 
-    init {
-        users = users()
-        friends = friends()
-        habits = habits()
-        userHabits = userHabits()
-        userQuests = userQuests()
+	// Actions
+	@Bean
+	fun addFriend(users: Users, friends: Friends): AddFriend {
+		return AddFriend(users, friends)
+	}
 
-        addFriend = AddFriend(users, friends)
-        addQuestSession = AddQuestSession()
-        addUserHabit = AddUserHabit(users, habits, userHabits)
-        createHabit = CreateHabit(habits)
-        createQuest = CreateQuest(users, userHabits, userQuests)
-        createUser = CreateUser(users)
-    }
+	@Bean
+	fun addQuestSession(): AddQuestSession {
+		return AddQuestSession()
+	}
 
-    private fun users(): Users {
-        return MemoryUsers()
-    }
+	@Bean
+	fun addUserHabit(users: Users, habits: Habits, userHabits: UserHabits): AddUserHabit {
+		return AddUserHabit(users, habits, userHabits)
+	}
 
-    private fun friends(): Friends {
-        return MemoryFriends()
-    }
+	@Bean
+	fun createHabit(habits: Habits): CreateHabit {
+		return CreateHabit(habits)
+	}
 
-    private fun habits(): Habits {
-        return MemoryHabits()
-    }
+	@Bean
+	fun createQuest(users: Users, userHabits: UserHabits, userQuests: UserQuests): CreateQuest {
+		return CreateQuest(users, userHabits, userQuests)
+	}
 
-    private fun userHabits(): UserHabits {
-        return MemoryUserHabits()
-    }
+	@Bean
+	fun createUser(users: Users): CreateUser {
+		return CreateUser(users)
+	}
 
-    private fun userQuests(): UserQuests {
-        return MemoryUserQuests()
-    }
+
+
+	// Repositories
+	@Bean
+	fun users(): Users {
+		return MemoryUsers()
+	}
+
+	@Bean
+	fun friends(): Friends {
+		return MemoryFriends()
+	}
+
+	@Bean
+	fun habits(): Habits {
+		return MemoryHabits()
+	}
+
+	@Bean
+	fun userHabits(): UserHabits {
+		return MemoryUserHabits()
+	}
+
+	@Bean
+	fun userQuests(): UserQuests {
+		return MemoryUserQuests()
+	}
+
 }
