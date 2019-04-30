@@ -1,6 +1,7 @@
 package infrastructure
 
 class MemoryHabits: Habits {
+
     val habits = mutableListOf<String>()
 
     override fun find(habit: String): String? {
@@ -14,4 +15,7 @@ class MemoryHabits: Habits {
         habits.add(habit)
     }
 
+    override fun all(): List<String> {
+        return habits
+    }
 }
