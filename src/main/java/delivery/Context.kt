@@ -6,32 +6,16 @@ import org.springframework.beans.factory.config.BeanDefinition
 import org.springframework.context.annotation.Bean
 import org.springframework.context.annotation.Configuration
 import org.springframework.context.annotation.Scope
+import springfox.documentation.builders.PathSelectors
+import springfox.documentation.builders.RequestHandlerSelectors
+import springfox.documentation.spi.DocumentationType
+import springfox.documentation.spring.web.plugins.Docket
+import springfox.documentation.swagger2.annotations.EnableSwagger2
+
+
 
 @Configuration
 class Context {
-
-	/*
-	// Resources
-	@Bean
-	@Scope(BeanDefinition.SCOPE_PROTOTYPE)
-	fun oneForAllResource(addFriend: AddFriend,
-						  addQuestSession: AddQuestSession,
-						  addUserHabit: AddUserHabit,
-						  createHabit: CreateHabit,
-						  createQuest: CreateQuest,
-						  createUser: CreateUser,
-						  users: Users,
-						  friends: Friends,
-						  habits: Habits,
-						  userHabits: UserHabits,
-						  userQuests: UserQuests
-
-						  ): OneForAllResource {
-		return OneForAllResource(addFriend, addQuestSession,
-				addUserHabit, createHabit, createQuest, createUser,
-				users, friends, habits, userHabits, userQuests)
-	}
-	*/
 
 	// Actions
 	@Bean
@@ -92,4 +76,17 @@ class Context {
 		return MemoryUserQuests()
 	}
 
+}
+
+@Configuration
+@EnableSwagger2
+class SwaggerConfig {
+	@Bean
+	fun api(): Docket {
+		return Docket(DocumentationType.SWAGGER_2)
+				.select()
+				.apis(RequestHandlerSelectors.any())
+				.paths(PathSelectors.any())
+				.build()
+	}
 }
